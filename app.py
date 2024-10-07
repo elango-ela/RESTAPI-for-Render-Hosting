@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.responses import PlainTextResponse
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Replace 'your_google_api_key' with your actual Google API key
