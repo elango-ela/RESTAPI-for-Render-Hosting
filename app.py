@@ -1,10 +1,11 @@
-# Import the FastAPI class
+import os
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Replace 'your_google_api_key' with your actual Google API key
-key = "AIzaSyAapf_GYO6P5XZz8Kp9b8rh-25eKV7UYt8"
+
+key = os.getenv("API_KEY")
 
 # Create an instance of the FastAPI class
 app = FastAPI()
