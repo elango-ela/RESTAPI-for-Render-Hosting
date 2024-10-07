@@ -1,0 +1,3 @@
+fastapi
+uvicorn
+langchain-google-genai# Adjust to the latest version as necessary
