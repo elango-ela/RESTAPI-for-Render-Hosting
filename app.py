@@ -25,7 +25,7 @@ llm = ChatGoogleGenerativeAI(
 async def read_root(genre: str, lang: str, description: str):
     ques = f"write the {genre} song in {lang} for the situation of {description}"
     prompt = (
-        "You are the great lyric writer ,so please provide a comprehensive answer to the following request based on general knowledge particularly if the requests are asking about love and romance:\n\n"
+        "You are the great lyric writer ,so please provide a comprehensive answer to the following request based on general knowledge:\n\n"
         f"Question: {ques}"
     )
     response = llm.invoke(prompt)
