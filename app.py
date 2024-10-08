@@ -1,16 +1,23 @@
 import re
 import os
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 from fastapi.responses import PlainTextResponse
+from fastapi.middleware.cors import CORSMiddleware
 from langchain_google_genai import ChatGoogleGenerativeAI
-
-# Replace 'your_google_api_key' with your actual Google API key
 
 key = os.getenv("API_KEY")
 
 # Create an instance of the FastAPI class
 app = FastAPI()
+
+# Add CORS Middleware to allow requests from any origin
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this list to specify the allowed origins (e.g., your Flutter app's domain)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Create the primary model instance outside the route
 llm = ChatGoogleGenerativeAI(
@@ -25,7 +32,7 @@ llm = ChatGoogleGenerativeAI(
 async def read_root(genre: str, lang: str, description: str):
     ques = f"write the {genre} song in {lang} for the situation of {description}"
     prompt = (
-        "You are the great lyric writer ,so please provide a comprehensive answer to the following request based on general knowledge:\n\n"
+        "You are the great lyric writer, so please provide a comprehensive answer to the following request based on general knowledge:\n\n"
         f"Question: {ques}"
     )
     response = llm.invoke(prompt)
@@ -38,12 +45,10 @@ async def read_root(genre: str, lang: str, description: str):
 
     # Dynamically format sections
     formatted_content = ""
-    # Regular expression to identify sections based on common headings
     section_pattern = re.compile(r'(?<=\n)([A-Z][a-z\-]*)')
 
     lines = refined_content.splitlines()
     for line in lines:
-        # Check if the line matches a section header
         match = section_pattern.match(line.strip())
         if match:
             formatted_content += f"\n**{line.strip()}**\n"  # Bold section names
